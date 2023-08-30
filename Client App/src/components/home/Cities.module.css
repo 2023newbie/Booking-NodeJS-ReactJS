@@ -1,0 +1,22 @@
+.cities {
+    display: flex;
+    justify-content: space-between;
+    width: 1180px;
+}
+
+.city {
+    margin: 0 10px;
+    display: flex;
+    position: relative;
+}
+
+.img img {
+    border-radius: 10px;
+}
+
+.content {
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    color: #fff;
+}
