@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import url from '../utils/url'
 
 const SearchDataContext = React.createContext({
   hotels: [],
@@ -10,7 +11,7 @@ export const SearchDataContextProvider = props => {
 
   const getHotelsBySearchInput = async (formInput, cb) => {
     try {
-      const response = await fetch('http://localhost:5000/search', {
+      const response = await fetch(url.root + '/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

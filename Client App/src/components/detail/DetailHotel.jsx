@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './DetailHotel.module.css'
 import { useParams } from 'react-router-dom'
 import FormBooking from '../form/FormBooking'
+import url from '../../utils/url'
 
 function DetailHotel() {
   const { hotelId } = useParams()
@@ -11,7 +12,7 @@ function DetailHotel() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('http://localhost:5000/detail/' + hotelId)
+        const response = await fetch(url.root + '/detail/' + hotelId)
         const pointHotel = await response.json()
         setHotel(pointHotel.hotel)
         setTrans(pointHotel.transactions)

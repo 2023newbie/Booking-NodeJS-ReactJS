@@ -3,6 +3,7 @@ import Cities from './Cities'
 import HotelList from './HotelList'
 import styles from './Main.module.css'
 import Types from './Types'
+import url from '../../utils/url'
 
 function Main() {
   const [propsByArea, setPropsByArea] = useState({ HN: 0, HCM: 0, DN: 0 })
@@ -18,7 +19,7 @@ function Main() {
   useEffect(() => {
     ;(async () => {
       try {
-        const res = await fetch('http://localhost:5000/homepage')
+        const res = await fetch(url.root + '/homepage')
         if (!res.ok) {
           throw new Error('Fetch failed.')
         }

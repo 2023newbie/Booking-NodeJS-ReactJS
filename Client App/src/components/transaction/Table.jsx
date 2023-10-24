@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom'
 import classes from './Table.module.css'
 import { useEffect, useState } from 'react'
+import url from '../../utils/url'
 
 const Table = () => {
   const { userId } = useParams()
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:5000/transactions/' + userId)
+    fetch(url.root + '/transactions/' + userId)
       .then(res => res.json())
       .then(data => setTransactions(data))
       .catch(err => console.log(err))

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import classes from './FormLogin.module.css'
+import url from '../../utils/url'
 
 const FormLogin = () => {
   const navigate = useNavigate()
@@ -11,7 +12,7 @@ const FormLogin = () => {
   const loginAccount = async () => {
     setError(null)
     try {
-      const res = await fetch('http://localhost:5000/login', {
+      const res = await fetch(url.root + '/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

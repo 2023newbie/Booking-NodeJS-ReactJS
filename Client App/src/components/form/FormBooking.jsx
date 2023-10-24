@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import DatePicker from '../DatePicker'
 import classes from './FormBooking.module.css'
+import url from '../../utils/url'
 
 const FormBooking = ({ hotel, transactions }) => {
   const navigate = useNavigate()
@@ -142,7 +143,7 @@ const FormBooking = ({ hotel, transactions }) => {
       payment: payment,
     }
     
-    fetch('http://localhost:5000/transactions', {
+    fetch(url.root + '/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

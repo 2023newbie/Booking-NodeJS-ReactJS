@@ -9,7 +9,7 @@ The website makes booking accommodations while traveling easier. The website inc
 
 - Server side: [Link](https://booking-server-9cpa.onrender.com/)
 - Client side: [Link](https://asm3-client-504fd.web.app/)
-- Admin side: [Link](https://asm3-admin-d1c99.web.app/)
+- Admin side: [Link](https://booking-admin-8d9bb.web.app/login)
 - Client-role account: `email: test@test.com`, `password: 12345`
 - Admin-role account: `email: test2@test.com`, `password: 12345`
 

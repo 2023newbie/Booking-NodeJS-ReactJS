@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import classes from './FormSignup.module.css'
 import { Link, useNavigate } from 'react-router-dom'
+import url from '../../utils/url'
 
 const FormSignup = () => {
   const navigate = useNavigate()
@@ -10,7 +11,7 @@ const FormSignup = () => {
 
   const createAccount = () => {
     setError(null)
-    fetch('http://localhost:5000/signup', {
+    fetch(url.root + '/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
