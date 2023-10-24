@@ -10,8 +10,8 @@ The website makes booking accommodations while traveling easier. The website inc
 - Server side: [Link](https://boutique2-2v5d.onrender.com/)
 - Client side: [Link](https://asm3-client-504fd.web.app/)
 - Admin side: [Link](https://asm3-admin-d1c99.web.app/)
-- Client-role account: `email: test@test.com`, `password: 12345678`
-- Admin-role account: `email: test2@test.com`, `password: 12345678`
+- Client-role account: `email: test@test.com`, `password: 12345`
+- Admin-role account: `email: test2@test.com`, `password: 12345`
 
 ## Project Breakdown
 

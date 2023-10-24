@@ -17,7 +17,7 @@ app.use(clientRoutes)
 // connect database
 mongoose
   .connect(
-    'mongodb+srv://root:Zz12345678@cluster1.opblshg.mongodb.net/asm2?retryWrites=true&w=majority'
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster1.opblshg.mongodb.net/${process.env.DB_DEFAULT_DATABASE}?retryWrites=true&w=majority`
   )
   .then(() => app.listen(5000))
   .catch(err => console.log(err))
