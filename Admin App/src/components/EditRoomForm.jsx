@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import classes from './EditRoomForm.module.css'
 import { useParams } from 'react-router-dom'
+import url from '../util/url'
 
 const EditRoomForm = () => {
   const { roomId } = useParams()
@@ -26,7 +27,7 @@ const EditRoomForm = () => {
       }
     }
 
-    fetch('http://localhost:5000/admin/room/' + roomId, {
+    fetch(url.root + '/admin/room/' + roomId, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -38,7 +39,7 @@ const EditRoomForm = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/hotels')
+    fetch(url.root + '/admin/hotels')
       .then(res => res.json())
       .then(data => {
         setHotels(data.map(hotel => hotel.name))
@@ -47,7 +48,7 @@ const EditRoomForm = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/room/' + roomId)
+    fetch(url.root + '/admin/room/' + roomId)
       .then(res => res.json())
       .then(data => setRoom(data))
       .catch(err => console.log(err))

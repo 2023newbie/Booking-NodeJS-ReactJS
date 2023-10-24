@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import InfoBoard from '../components/InfoBoard'
 import Transaction from '../components/Transaction'
+import url from '../util/url'
 
 const Dashboard = () => {
   const [infoBoard, setInfoBoard] = useState(null)
@@ -9,7 +10,7 @@ const Dashboard = () => {
   useEffect(() => {
     ;(async () => {
       try {
-        const res = await fetch('http://localhost:5000/admin/dashboard')
+        const res = await fetch(url.root + '/admin/dashboard')
         const data = await res.json()
         setInfoBoard({
           users: data.users,

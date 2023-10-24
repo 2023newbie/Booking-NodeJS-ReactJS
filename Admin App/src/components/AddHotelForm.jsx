@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import classes from './AddHotelForm.module.css'
+import url from '../util/url'
 
 const AddHotelForm = () => {
   const nameInput = useRef()
@@ -31,7 +32,7 @@ const AddHotelForm = () => {
         return
       }
     }
-    fetch('http://localhost:5000/admin/hotel', {
+    fetch(url.root + '/admin/hotel', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

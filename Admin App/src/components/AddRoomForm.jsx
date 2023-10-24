@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import classes from './AddRoomForm.module.css'
+import url from '../util/url'
 
 const AddRoomForm = () => {
   const titleInput = useRef()
@@ -24,7 +25,7 @@ const AddRoomForm = () => {
       }
     }
 
-    fetch('http://localhost:5000/admin/room', {
+    fetch(url.root + '/admin/room', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -36,7 +37,7 @@ const AddRoomForm = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/hotels')
+    fetch(url.root + '/admin/hotels')
       .then(res => res.json())
       .then(data => {
         setHotels(data.map(hotel => hotel.name))

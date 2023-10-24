@@ -1,12 +1,13 @@
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import classes from './TransactionsList.module.css'
 import { useEffect, useState } from 'react'
+import url from '../util/url'
 
 const TransactionsList = () => {
   const [trans, setTrans] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/transactions')
+    fetch(url.root + '/admin/transactions')
       .then(res => res.json())
       .then(data => setTrans(data))
   }, [])

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import classes from './EditHotelForm.module.css'
 import { useEffect, useRef, useState } from 'react'
+import url from '../util/url'
 
 const EditHotelForm = () => {
   const { hotelId } = useParams()
@@ -17,14 +18,14 @@ const EditHotelForm = () => {
   const [hotel, setHotel] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/hotel/' + hotelId)
+    fetch(url.root + '/admin/hotel/' + hotelId)
       .then(res => res.json())
       .then(data => setHotel(data))
       .catch(err => console.log(err))
   }, [hotelId])
 
   const editHotel = (hotelId) => {
-    fetch('http://localhost:5000/admin/hotel/' +hotelId, {
+    fetch(url.root + '/admin/hotel/' +hotelId, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

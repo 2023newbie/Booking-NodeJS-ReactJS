@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import classes from './HotelLists.module.css'
+import url from '../util/url'
 
 const HotelLists = () => {
   const navigate = useNavigate()
   const [hotels, setHotels] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/hotels')
+    fetch(url.root + '/admin/hotels')
       .then(res => res.json())
       .then(data => setHotels(data))
       .catch(err => console.log(err))
@@ -16,7 +17,7 @@ const HotelLists = () => {
   const deleteHotel = (hotelId) => {
     const isAccept = window.confirm('Are you sure?')
     if (isAccept) {
-      fetch('http://localhost:5000/admin/hotel/' + hotelId, {
+      fetch(url.root + '/admin/hotel/' + hotelId, {
         method: 'DELETE'
       })
         .then(res => res.json())

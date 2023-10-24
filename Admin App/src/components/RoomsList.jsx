@@ -2,13 +2,14 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import classes from './RoomsList.module.css'
+import url from '../util/url'
 
 const RoomsList = () => {
   const navigate = useNavigate()
   const [rooms, setRooms] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:5000/admin/rooms')
+    fetch(url.root + '/admin/rooms')
       .then(res => res.json())
       .then(data => setRooms(data))
       .catch(err => console.log(err))
@@ -17,7 +18,7 @@ const RoomsList = () => {
   const deleteRoom = roomId => {
     const isAccept = window.confirm('Are you sure?')
     if (isAccept) {
-      fetch('http://localhost:5000/admin/room/' + roomId, {
+      fetch(url.root + '/admin/room/' + roomId, {
         method: 'DELETE',
       })
         .then(res => res.json())
