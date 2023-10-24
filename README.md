@@ -8,7 +8,7 @@ The website makes booking accommodations while traveling easier. The website inc
 \*Note: Please open link server-side first.
 
 - Server side: [Link](https://booking-server-9cpa.onrender.com/)
-- Client side: [Link](https://asm3-client-504fd.web.app/)
+- Client side: [Link](https://booking-client-513f3.web.app/)
 - Admin side: [Link](https://booking-admin-8d9bb.web.app/login)
 - Client-role account: `email: test@test.com`, `password: 12345`
 - Admin-role account: `email: test2@test.com`, `password: 12345`
@@ -19,33 +19,32 @@ The website makes booking accommodations while traveling easier. The website inc
 
 - Directory: Server
 - Features:
-  - [x] Building API server (MVC model) - CRUD operations.
-  - [x] Generating schema models.
+  - [x] Building api server (MVC model) - CRUD operations
+  - [x] Generating schema models
   - [x] Session-cookie to store data login user.
-  - [x] Authenticating, encrypt password with bcrypt.
-  - [x] Live chat with socket.io.
+  - [x] Authenticating based on user role.
+  - [x] Connect and manage data on MongoDB
 
 ### Client App
 
 - Directory: Client App
 - Features:
-  - [x] Login, sign up account.
-  - [x] Home page, shop page, detail product page.
-  - [x] Cart page, check out page, history orders page (for logged in user).
-  - [x] Redux/redux-toolkit to store data.
-  - [x] React-router.
-  - [x] Live chat.
-  - [x] Send email when order successfully.
+  - [x] Developing Login/Sign up page
+  - [x] Home page, Search page, Detail product page
+  - [x] Search page was build on logic to check available room based on date range input, amount of people.
+  - [x] Redux/Redux Toolkit to store some
+  - [x] React-router
+  - [x] See history of transactions
 
 ### Admin App
 
 - Directory: Admin App
-- Features: 
-  - [x] Login.
-  - [x] Dashboard page - summarize data.
-  - [x] Create/update/delete products.
-  - [x] Show and manage orders of users.
-  - [x] Live chat with customer.
+- Features:
+  - [x] Login page - authenticate role admin.
+  - [x] Dash-board to summarize data.
+  - [x] Create/Update/Delete Hotel, Room
+  - [x] Show all transactions on system
+  - [x] User Page - manage and set role for user
 
 ### Deployment on local
 
@@ -75,8 +74,6 @@ $ npm start     // run it locally
 
 #### Server-side (Dir: Server)
 - Access ./src/utils/url.js, change root to 'http://localhost:5000' (domain of server on port 5000).
-- In ./nodemon.json, add your mongoDB credential
-- Create products collection by import ./products.json file
 
 ```
 $ cd  Admin App      // go to client folder
