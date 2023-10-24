@@ -13,7 +13,6 @@ const RootPage = () => {
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-    console.log(currentUser)
     setCurrentUser(currentUser)
   }, [])
 
@@ -24,7 +23,9 @@ const RootPage = () => {
         email={currentUser?.email}
         isLogin={currentUser !== undefined && currentUser !== null}
       />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </>
   )

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import DatePicker from '../DatePicker'
 import classes from './FormBooking.module.css'
 
-const FormBooking = ({ hotel }) => {
+const FormBooking = ({ hotel, transactions }) => {
   const navigate = useNavigate()
   const [dateState, setDateState] = useState([
     {
@@ -15,10 +15,83 @@ const FormBooking = ({ hotel }) => {
   const [isSelectDate, setIsSelectDate] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
   const [totalPrice, setTotalPrice] = useState(0)
+  const [rooms, setRooms] = useState([])
   const fullnameInput = useRef()
   const emailInput = useRef()
   const phoneInput = useRef()
   const identityCardInput = useRef()
+
+  // dựa trên thời gian khách chọn để tìm ra các phòng chưa có ng thuê
+  const setAvailableRooms = (state) => {
+    // mapping toàn bộ transactions của khách sạn, chỉ giữ lại số phòng và chuyển date thành dạng số tiện so sánh
+    const trans = transactions.map(tran => {
+      return {
+        room: tran.room,
+        startDate: new Date(tran.startDate).getTime(),
+        endDate: new Date(tran.endDate).getTime(),
+      }
+    })
+
+    // các phòng đang đc sử dụng
+    const fillRooms = []
+
+    // tìm các phòng đang đc sử dụng dựa trên thời gian client chọn và push vào arr fillRooms để tiện remove tránh render ra giao diện
+    trans.forEach(tran => {
+      let isFit = false
+
+      if (
+        tran.startDate >= state[0].startDate.getTime() &&
+        tran.endDate <= state[0].endDate.getTime()
+      ) {
+        isFit = true
+      }
+
+      if (
+        tran.startDate <= state[0].startDate.getTime() &&
+        tran.endDate >= state[0].startDate.getTime()
+      ) {
+        isFit = true
+      }
+
+      if (
+        tran.startDate <= state[0].endDate.getTime() &&
+        tran.endDate >= state[0].endDate.getTime()
+      ) {
+        isFit = true
+      }
+
+      if (
+        tran.startDate <= state[0].startDate.getTime() &&
+        tran.endDate >= state[0].endDate.getTime()
+      ) {
+        isFit = true
+      }
+
+      if (isFit) {
+        tran.room.forEach(r => fillRooms.push(r))
+      }
+    })
+
+    // mapping rooms để điều chỉnh k bị ảnh hưởng trực tiếp tới hotel object
+    const mappingRooms = hotel.rooms.map(r => ({
+      ...r,
+      roomNumbers: [...r.roomNumbers],
+    }))
+
+    // loại bỏ các phòng đã có ng thuê
+    for (let i = 0; i < mappingRooms.length; i++) {
+      for (let j = 0; j < fillRooms.length; j++) {
+        if (mappingRooms[i].roomNumbers.includes(fillRooms[j])) {
+          mappingRooms[i].roomNumbers.splice(j, 1)
+          fillRooms.splice(j, 1)
+          j--
+        }
+      }
+    }
+
+    const result = mappingRooms.filter(room => room.roomNumbers.length > 0)
+    setRooms(result)
+  }
 
   useEffect(() => {
     const user = localStorage.getItem('currentUser')
@@ -42,16 +115,18 @@ const FormBooking = ({ hotel }) => {
       fullname: fullnameInput.current.value,
       email: emailInput.current.value,
       phone: phoneInput.current.value,
-      identityCard: identityCardInput.current.value
+      identityCard: identityCardInput.current.value,
     }
-
+    // check
     if (!isSelectDate) return
-
+    
     for (const key in formInfo) if (formInfo[key] === '') return
 
-    const roomsList = Array.from(document.querySelectorAll('input[type="checkbox"]'))
+    const roomsList = Array.from(
+      document.querySelectorAll('input[type="checkbox"]')
+    )
     const pointRoomsDom = roomsList.filter(room => room.checked)
-    const pointRooms = pointRoomsDom.map(room => room.id.split('-')[1])
+    const pointRooms = pointRoomsDom.map(room => +room.id.split('-')[1])
 
     const payment = document.querySelector('#payment').value
 
@@ -59,23 +134,24 @@ const FormBooking = ({ hotel }) => {
 
     const trans = {
       userId: currentUser._id,
-      hotel: hotel.title,
+      hotel: hotel._id,
       rooms: pointRooms,
-      dateStart: dateState[0].startDate.toLocaleDateString(),
-      dateEnd: dateState[0].endDate.toLocaleDateString(),
+      startDate: dateState[0].startDate.toLocaleDateString(),
+      endDate: dateState[0].endDate.toLocaleDateString(),
       total: totalPrice,
-      payment: payment
+      payment: payment,
     }
-
+    
     fetch('http://localhost:5000/transactions', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(trans)
+      body: JSON.stringify(trans),
     })
       .then(res => res.json())
       .then(data => {
+        console.log('check');
         if (data.message === 'Transaction saved.') {
           navigate('/transactions/' + currentUser._id)
         }
@@ -89,7 +165,10 @@ const FormBooking = ({ hotel }) => {
         <h3 className={classes.title}>Dates</h3>
         <DatePicker
           dateState={dateState}
-          setDateState={setDateState}
+          setDateState={date => {
+            setAvailableRooms(date)
+            setDateState(date)
+          }}
           onClick={() => {
             setTotalPrice(0)
             const checkboxes = document.querySelectorAll(
@@ -147,9 +226,9 @@ const FormBooking = ({ hotel }) => {
         <div className={classes['select-rooms']}>
           <h3 className={classes.title}>Select Rooms</h3>
           <div className={classes.rooms}>
-            {hotel.rooms.map(room => {
+            {rooms.map(room => {
               return (
-                <div className={classes.room}>
+                <div className={classes.room} key={room._id}>
                   <h4 className={classes['title-room']}>{room.title}</h4>
                   <p>{room.desc}</p>
                   <div className={classes['space-between']}>
@@ -162,7 +241,7 @@ const FormBooking = ({ hotel }) => {
                     <div className={classes['tick-rooms']}>
                       {room.roomNumbers.map(roomNum => {
                         return (
-                          <div className={classes['tick-room']}>
+                          <div className={classes['tick-room']} key={roomNum}>
                             <label htmlFor={`tick-${roomNum}`}>{roomNum}</label>
                             <input
                               type="checkbox"
@@ -201,7 +280,7 @@ const FormBooking = ({ hotel }) => {
         </h3>
         <div className={classes.confirm}>
           <select id="payment" name="payment">
-            <option value=''>Select Payment Method</option>
+            <option value="">Select Payment Method</option>
             <option value="Credit Card">Credit Card</option>
             <option value="Cash">Cash</option>
           </select>

@@ -5,42 +5,38 @@ import styles from './Main.module.css'
 import Types from './Types'
 
 function Main() {
-  const [cities, setCities] = useState([])
-  const [hotels, setHotels] = useState([])
+  const [propsByArea, setPropsByArea] = useState({ HN: 0, HCM: 0, DN: 0 })
+  const [propsByType, setPropsByType] = useState({
+    hotel: 0,
+    apartment: 0,
+    resort: 0,
+    villa: 0,
+    cabin: 0,
+  })
+  const [highestRatingHotels, setHighestRatingHotels] = useState([])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
-        const res = await fetch('http://localhost:5000/cities')
+        const res = await fetch('http://localhost:5000/homepage')
         if (!res.ok) {
           throw new Error('Fetch failed.')
         }
-        const cities = await res.json()
-        setCities(cities)
-      } catch (err) {
-        console.log(err)
-      }
-    })();
-    (async () => {
-      try {
-        const res = await fetch('http://localhost:5000/hotels')
-        if (!res.ok) {
-          throw new Error('Fetch failed.')
-        }
-        const hotels = await res.json()
-        setHotels(hotels)
+        const data = await res.json()
+        setPropsByArea(data.propsByArea)
+        setPropsByType(data.propsByType)
+        setHighestRatingHotels(data.highestRatingHotels)
       } catch (err) {
         console.log(err)
       }
     })()
   }, [])
-  
 
   return (
     <div className={styles.container}>
-      <Cities cities={cities} />
-      <Types />
-      <HotelList hotels={hotels} />
+      <Cities propsByArea={propsByArea} />
+      <Types propsByType={propsByType} />
+      <HotelList highestRatingHotels={highestRatingHotels} />
     </div>
   )
 }

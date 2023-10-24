@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.post('/signup', clientCtrls.postSignup)
 router.post('/login', clientCtrls.postLogin)
-router.get('/cities', clientCtrls.getCities)
+router.get('/homepage', clientCtrls.getHomeInfo)
 router.get('/hotels', clientCtrls.getHotels)
 router.post('/search', clientCtrls.postSearch)
 router.get('/detail/:hotelId', clientCtrls.getHotel)

@@ -8,7 +8,7 @@ const SearchDataContext = React.createContext({
 export const SearchDataContextProvider = props => {
   const [hotels, setHotels] = useState([])
 
-  const getHotelsBySearchInput = async formInput => {
+  const getHotelsBySearchInput = async (formInput, cb) => {
     try {
       const response = await fetch('http://localhost:5000/search', {
         method: 'POST',
@@ -22,6 +22,7 @@ export const SearchDataContextProvider = props => {
       }
       const hotelsData = await response.json()
       setHotels(hotelsData)
+      cb()
     } catch (err) {
       console.log(err)
     }

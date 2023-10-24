@@ -15,5 +15,7 @@ router.post('/room', adminCtrls.postRoom)
 router.get('/transactions', adminCtrls.getTransactions)
 router.get('/hotel/:hotelId', adminCtrls.getHotel)
 router.put('/hotel/:hotelId', adminCtrls.putHotel)
+router.get('/room/:roomId', adminCtrls.getRoom)
+router.put('/room/:roomId', adminCtrls.putRoom)
 
-module.exports = router
+module.exports = router 

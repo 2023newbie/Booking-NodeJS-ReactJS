@@ -2,13 +2,13 @@ import {useNavigate} from 'react-router-dom'
 import styles from './HotelList.module.css'
 
 // show options hotels
-function HotelList({hotels}) {
+function HotelList({highestRatingHotels}) {
   const navigate = useNavigate()
-  const filteredHotels = hotels.filter(hotel => hotel.rating > 3)
+  console.log(highestRatingHotels);
 
   // navigate to page /detail
-  const clickHandler = () => {
-    navigate('/detail')
+  const clickHandler = (hotelId) => {
+    navigate('/detail/' + hotelId)
   }
 
   return (
@@ -16,7 +16,7 @@ function HotelList({hotels}) {
       <h2>Homes guests love</h2>
       <div className={styles.lists}>
 		  {/* EACH HOTEL IS A CARD */}
-        {filteredHotels.map((hotel, index) => (
+        {highestRatingHotels.map((hotel, index) => (
           <div className={styles.list} key={index}>
             <div className={styles.img}>
               <img
@@ -28,7 +28,7 @@ function HotelList({hotels}) {
             </div>
             <div className={styles.content}>
               <h3
-                onClick={clickHandler}
+                onClick={() => clickHandler(hotel._id)}
                 className={`${styles.name} ${styles.m10}`}
               >
                 {hotel.title}

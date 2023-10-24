@@ -38,8 +38,8 @@ const Table = () => {
                   <td>{trans.hotel}</td>
                   <td>{trans.room.join(', ')}</td>
                   <td>
-                    {new Date(trans.dateStart).toLocaleDateString()} -{' '}
-                    {new Date(trans.dateEnd).toLocaleDateString()}
+                    {new Date(trans.startDate).toLocaleDateString()} -{' '}
+                    {new Date(trans.endDate).toLocaleDateString()}
                   </td>
                   <td>${trans.price}</td>
                   <td>{trans.payment}</td>

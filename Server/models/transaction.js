@@ -9,7 +9,8 @@ const transactionSchema = new Schema({
     required: true,
   },
   hotel: {
-    type: String,
+    type: mongoose.Types.ObjectId,
+    ref: 'Hotel',
     required: true,
   },
   room: [
@@ -18,11 +19,11 @@ const transactionSchema = new Schema({
       required: true
     }
   ],
-  dateStart: {
+  startDate: {
     type: Date,
     required: true
   },
-  dateEnd: {
+  endDate: {
     type: Date,
     required: true
   },

@@ -1,36 +1,34 @@
 import styles from './Types.module.css'
 
-// DUMMY DATA
-const types = [
-	{
-		"name": "Hotels",
-		"count": 4,
-		"image": "./images/type_1.webp"
-	},
-	{
-		"name": "Apartments",
-		"count": 0,
-		"image": "./images/type_2.jpg"
-	},
-	{
-		"name": "Resorts",
-		"count": 0,
-		"image": "./images/type_3.jpg"
-	},
-	{
-		"name": "Villas",
-		"count": 0,
-		"image": "./images/type_4.jpg"
-	},
-	{
-		"name": "Cabins",
-		"count": 0,
-		"image": "./images/type_5.jpg"
-	}
-]
-
 // show types hotels
-function Types() {
+function Types({propsByType}) {
+	const types = [
+		{
+			"name": "Hotels",
+			"count": propsByType.hotel,
+			"image": "./images/type_1.webp"
+		},
+		{
+			"name": "Apartments",
+			"count": propsByType.apartment,
+			"image": "./images/type_2.jpg"
+		},
+		{
+			"name": "Resorts",
+			"count": propsByType.resort,
+			"image": "./images/type_3.jpg"
+		},
+		{
+			"name": "Villas",
+			"count": propsByType.villa,
+			"image": "./images/type_4.jpg"
+		},
+		{
+			"name": "Cabins",
+			"count": propsByType.cabin,
+			"image": "./images/type_5.jpg"
+		}
+	]
   return (
     <div className={styles.wrap}>
 	    <h2>Browse by property type</h2>

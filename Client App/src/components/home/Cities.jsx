@@ -1,37 +1,38 @@
 import React from 'react'
 import styles from './Cities.module.css'
 
-// dummy data
-const cities = [
-	{
-		"name": "Dublin",
-		"subText": "123 properties",
-		"image": "./images/city_1.webp"
-	},
-	{
-		"name": "Reno",
-		"subText": "533 properties",
-		"image": "./images/city_2.webp"
-	},
-	{
-		"name": "Austin",
-		"subText": "532 properties",
-		"image": "./images/city_3.webp"
-	}
-]
-
 // show options cities
-function Cities({cities}) {
+function Cities({ propsByArea }) {
+  const cities = [
+    {
+      name: 'Ha Noi',
+      props: propsByArea.HN,
+      image: './images/hanoi-3609871_1920.jpg',
+    },
+    {
+      name: 'Ho Chi Minh',
+      props: propsByArea.HCM,
+      image: './images/sai-gon.jpg',
+    },
+    {
+      name: 'Da Nang',
+      props: propsByArea.DN,
+      image: './images/da-anng.jpg',
+    },
+  ]
   return (
     <div className={styles.cities}>
-      {cities.map((city, index) => (
-        <div className={styles.city} key={index}>
+      {cities.map(city => (
+        <div className={styles.city} key={city.name}>
           <div className={styles.img}>
-            <img src={city.image} alt={city.name} width='350px' height="250px"/>
+            <img
+              src={city.image}
+              alt={city.name}
+            />
           </div>
           <div className={styles.content}>
             <h1>{city.name}</h1>
-            <h3>{city.subText}</h3>
+            <h3>{city.props} properties</h3>
           </div>
         </div>
       ))}

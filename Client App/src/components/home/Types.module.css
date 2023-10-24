@@ -1,18 +1,20 @@
 .wrap {
-    width: 1180px;
+    width: calc(100% - 40px);
 }
 
 .types {
     display: flex;
 }
 
+.type:nth-child(2), .type:nth-child(4) {
+    margin: 0 10px;
+}
+
 .type {
-    margin: 10px;
     width: 20%;
 }
 
 .wrap > h2 {
-    padding-left: 10px;
     margin: 20px 0;
 }
 

@@ -6,13 +6,15 @@ import FormBooking from '../form/FormBooking'
 function DetailHotel() {
   const { hotelId } = useParams()
   const [hotel, setHotel] = useState(null)
+  const [trans, setTrans] = useState(null)
   const [isShow, setIsShow] = useState(false)
   useEffect(() => {
     (async () => {
       try {
         const response = await fetch('http://localhost:5000/detail/' + hotelId)
         const pointHotel = await response.json()
-        setHotel(pointHotel)
+        setHotel(pointHotel.hotel)
+        setTrans(pointHotel.transactions)
       } catch (err) {
         console.log(err)
       }
@@ -37,7 +39,7 @@ function DetailHotel() {
       {hotel && <div className={styles['basic-info']}>
         <h2>{hotel.name}</h2>
         <p className={styles.address}>
-          <i class="fa-solid fa-location-dot"></i> {hotel.address}
+          <i className="fa-solid fa-location-dot"></i> {hotel.address}
         </p>
         <p className={styles.blue}>Excellent location - {hotel.distance}m from center</p>
         <p className={styles.green}>Book a stay over ${hotel.cheapestPrice} at this property and get a free airport taxi</p>
@@ -49,7 +51,7 @@ function DetailHotel() {
       {/* IMAGE PART */}
       {hotel && <div className={styles['wrap-img']}>
         {hotel.photos.map(image => (
-          <img src={image} alt={hotel.name} width="380px" />
+          <img src={image} alt={hotel.name} width="380px" key={image}/>
         ))}
       </div>}
 
@@ -68,7 +70,7 @@ function DetailHotel() {
           </button>
         </div>
       </div>}
-      {isShow && <FormBooking hotel={hotel} />}
+      {isShow && <FormBooking hotel={hotel} transactions={trans} />}
     </div>
   )
 }

@@ -1,18 +1,27 @@
 import { useContext, useState } from 'react'
 import styles from './SearchPopup.module.css'
 import SearchDataContext from '../../store/search-data-context'
+import { DateRange } from 'react-date-range'
+import convertTypeDate from '../../utils/mm-dd-yyyy'
 
 // show sidebar search model
 function SearchPopup() {
   const { findHotels } = useContext(SearchDataContext)
   const [destination, setDestination] = useState('')
-  const [date, setDate] = useState('')
   const [adultQty, setAdultQty] = useState('')
   const [childrenQty, setChildrenQty] = useState('')
   const [roomQty, setRoomQty] = useState('')
-  
+  const [isFocusDateInput, setIsFocusDateInput] = useState(false)
+  const [dateState, setDateState] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection',
+    },
+  ])
+
   const fetchHotels = () => {
-    findHotels({destination, date, adultQty, childrenQty, roomQty})
+    findHotels({ destination, date: dateState, adultQty, childrenQty, roomQty })
   }
   return (
     <div className={styles.wrap}>
@@ -24,7 +33,7 @@ function SearchPopup() {
             type="text"
             name="destination"
             list="destination"
-            placeholder='Ha Noi'
+            placeholder="Ha Noi"
             value={destination}
             onChange={e => setDestination(e.target.value)}
           />
@@ -36,13 +45,27 @@ function SearchPopup() {
         </div>
         <div className={`${styles.fs13} ${styles.div}`}>
           <label htmlFor="date">Check-in Date</label>
-          <input
-            type="text"
-            name="date"
-            placeholder="06/24/2022 to 06/24/2022"
-            value={date}
-            onChange={e => setDate(e.target.value)}
-          />
+          <p
+            className={styles.date}
+            onClick={() => setIsFocusDateInput(prevState => !prevState)}
+          >
+            {convertTypeDate(dateState[0].startDate)} to{' '}
+            {convertTypeDate(dateState[0].endDate)}
+          </p>
+          {isFocusDateInput && (
+            <div
+              onMouseDown={e => e.preventDefault()}
+              className={styles['date-picker-container']}
+            >
+              <DateRange
+                editableDateInputs={true}
+                moveRangeOnFirstSelection={false}
+                minDate={new Date()}
+                onChange={item => setDateState([item.selection])}
+                ranges={dateState}
+              />
+            </div>
+          )}
         </div>
         <div>
           <p className={styles.fs13}>Options</p>

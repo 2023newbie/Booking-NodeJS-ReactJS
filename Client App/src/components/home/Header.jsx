@@ -12,6 +12,8 @@ function Header() {
   const { findHotels } = useContext(SearchDataContext)
   const navigate = useNavigate()
   const [isFocusDateInput, setIsFocusDateInput] = useState(false)
+  const [options, setOptions] = useState({ adult: 1, children: 0, room: 1 })
+  const [openOptions, setOpenOptions] = useState(false)
   const [dateState, setDateState] = useState([
     {
       startDate: new Date(),
@@ -20,32 +22,35 @@ function Header() {
     },
   ])
   const destinationInput = useRef()
-  const dateInput = useRef()
-  const adultQtyInput = useRef()
-  const childrenQtyInput = useRef()
-  const roomQtyInput = useRef()
 
   // navigate page to /search
   const clickHandler = event => {
     event.preventDefault()
-    findHotels({
-      destination: destinationInput.current.value,
-      date: dateInput.current.value,
-      adultQty: adultQtyInput.current.value,
-      childrenQty: childrenQtyInput.current.value,
-      roomQty: roomQtyInput.current.value
+    findHotels(
+      {
+        destination: destinationInput.current.value,
+        date: { startDate: dateState.startDate, endDate: dateState.endDate },
+        adultQty: options.adult,
+        childrenQty: options.children,
+        roomQty: options.room,
+      },
+      () => {
+        navigate('/search')
+      }
+    )
+  }
+
+  const handleOption = (name, operation) => {
+    setOptions(prev => {
+      return {
+        ...prev,
+        [name]: operation === 'i' ? options[name] + 1 : options[name] - 1,
+      }
     })
-    navigate('/search')
   }
 
-  // focus input date to show model
-  const focusDateInputHandler = () => {
-    setIsFocusDateInput(true)
-  }
-
-  // blur input date to hide model
-  const blurDateInputHandler = () => {
-    setIsFocusDateInput(false)
+  const showDateInputHandler = () => {
+    setIsFocusDateInput(prevState => !prevState)
   }
 
   // convert type of dateState to mm/dd/yyyy
@@ -70,6 +75,72 @@ function Header() {
         </div>
       )}
 
+      {openOptions && (
+        <div className={styles.options}>
+          <div className={styles.optionItem}>
+            <span className={styles.optionText}>Adult</span>
+            <div className={styles.optionCounter}>
+              <button
+                disabled={options.adult <= 1}
+                className={styles.optionCounterButton}
+                onClick={() => handleOption('adult', 'd')}
+              >
+                -
+              </button>
+              <span className={styles.optionCounterNumber}>
+                {options.adult}
+              </span>
+              <button
+                className={styles.optionCounterButton}
+                onClick={() => handleOption('adult', 'i')}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div className={styles.optionItem}>
+            <span className={styles.optionText}>Children</span>
+            <div className={styles.optionCounter}>
+              <button
+                disabled={options.children <= 0}
+                className={styles.optionCounterButton}
+                onClick={() => handleOption('children', 'd')}
+              >
+                -
+              </button>
+              <span className={styles.optionCounterNumber}>
+                {options.children}
+              </span>
+              <button
+                className={styles.optionCounterButton}
+                onClick={() => handleOption('children', 'i')}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div className={styles.optionItem}>
+            <span className={styles.optionText}>Room</span>
+            <div className={styles.optionCounter}>
+              <button
+                disabled={options.room <= 1}
+                className={styles.optionCounterButton}
+                onClick={() => handleOption('room', 'd')}
+              >
+                -
+              </button>
+              <span className={styles.optionCounterNumber}>{options.room}</span>
+              <button
+                className={styles.optionCounterButton}
+                onClick={() => handleOption('room', 'i')}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* HEADER */}
       <header className={styles['wrap-header']}>
         {/* MESSAGE PART */}
@@ -80,74 +151,50 @@ function Header() {
             more with a free account
           </p>
           <button className={styles.button}>Sign in / Register</button>
-
-          {/* FORM SEARCH */}
-          <form className={styles.form}>
-            <div>
-              <label htmlFor="">
-                <i className="fa fa-bed"></i>
-              </label>
-              <input
-                type="text"
-                placeholder="Where are you going?"
-                list="destination"
-                ref={destinationInput}
-              />
-              <datalist id="destination">
-                <option value="Ha Noi" />
-                <option value="Ho Chi Minh" />
-                <option value="Da Nang" />
-              </datalist>
-            </div>
-
-            <div className={styles.divDate}>
-              <label htmlFor="">
-                <i className="fa fa-calendar"></i>
-              </label>
-              <input
-                className={styles['input-ccc']}
-                type="text"
-                placeholder="06/24/2022 to 06/24/2022"
-                onFocus={focusDateInputHandler}
-                value={`${startDate} to ${endDate}`}
-                onBlur={blurDateInputHandler}
-                ref={dateInput}
-                onChange={() => {}}
-              />
-            </div>
-
-            <div className={styles.roomCount}>
-              <div>
-                <i className="fa fa-female"></i>
-              </div>
-              <div>
-                <input
-                  type="number"
-                  placeholder="1 adult"
-                  ref={adultQtyInput}
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  placeholder="0 children"
-                  ref={childrenQtyInput}
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  placeholder="1 room"
-                  ref={roomQtyInput}
-                />
-              </div>
-            </div>
-
-            <button onClick={clickHandler} className={styles.button}>
-              Search
-            </button>
-          </form>
         </div>
+        {/* FORM SEARCH */}
+        <form className={styles.form}>
+          <div>
+            <label htmlFor="city">
+              <i className="fa fa-bed"></i>
+            </label>
+            <input
+              type="text"
+              id="city"
+              placeholder="Where are you going?"
+              list="destination"
+              ref={destinationInput}
+            />
+            <datalist id="destination">
+              <option value="Ha Noi" />
+              <option value="Ho Chi Minh" />
+              <option value="Da Nang" />
+            </datalist>
+          </div>
+
+          <div className={styles.divDate} onClick={showDateInputHandler}>
+            <label htmlFor="">
+              <i className="fa fa-calendar"></i>
+            </label>
+            &nbsp;{startDate} to {endDate}
+          </div>
+
+          <div className={styles.roomCount}>
+            <div>
+              <i className="fa fa-female"></i>
+            </div>
+            <div
+              className={styles.qtyInput}
+              onClick={() => setOpenOptions(prevState => !prevState)}
+            >
+              1 adult - 0 children - 1 room
+            </div>
+          </div>
+
+          <button onClick={clickHandler} className={styles.button}>
+            Search
+          </button>
+        </form>
       </header>
     </>
   )
